@@ -1,7 +1,7 @@
 import { notifySlack } from './notifiers/slack.js';
 import { notifyPagerDuty } from './notifiers/pagerduty.js';
 
-export class MetricsSDK {
+export class yoban {
   #buffer = [];
   #aggregated = [];
 

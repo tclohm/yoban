@@ -1,1 +1,1 @@
-export { MetricSDK } from './src/MetricsSDK.js';
+export { yoban } from './src/yoban.js';

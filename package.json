@@ -1,5 +1,5 @@
 {
-  "name": "mihari",
+  "name": "@tclohm/yoban",
   "version": "1.0.0",
   "description": "Lightweight middleware for real-time API performance monitoring and SLA alerting",
   "keywords": [
@@ -9,9 +9,9 @@
     "middleware",
     "alerting"
   ],
-  "homepage": "https://github.com/tclohm/mihari#readme",
+  "homepage": "https://github.com/tclohm/@tclohm/yoban#readme",
   "bugs": {
-    "url": "https://github.com/tclohm/mihari/issues"
+    "url": "https://github.com/tclohm/@tclohm/yoban/issues"
   },
   "repository": {
     "type": "git",

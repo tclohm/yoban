@@ -1,17 +1,17 @@
-# yoban
+# @tclohm/yoban
 
 > Lightweight Express middleware for real-time API performance monitoring and SLA alerting.
 
 ## Install
 ```
-npm install mihari 
+npm install @tclohm/yoban 
 ```
 
 ## Usage
 ```javascript
-import { MetricsSDK } from 'mihari';
+import { yoban } from '@tclohm/yoban';
 
-const metrics = new MetricsSDK({
+const metrics = new yoban({
   service: "payments",
   flushInterval: 10000,       // flush every 10s
   violationThreshold: 0.5,    // alert if >50% of requests violate SLA
