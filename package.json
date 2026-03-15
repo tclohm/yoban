@@ -9,13 +9,13 @@
     "middleware",
     "alerting"
   ],
-  "homepage": "https://github.com/tclohm/@tclohm/yoban#readme",
+  "homepage": "https://github.com/tclohm/yoban#readme",
   "bugs": {
-    "url": "https://github.com/tclohm/@tclohm/yoban/issues"
+    "url": "https://github.com/tclohm/yoban/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tclohm/mihari.git"
+    "url": "git+https://github.com/tclohm/yoban.git"
   },
   "license": "MIT",
   "author": "tclohm",
