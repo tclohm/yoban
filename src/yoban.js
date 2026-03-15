@@ -9,25 +9,17 @@ export class yoban {
     this.config = config;
     this.#startFlushing();
   }
-
-  middleware() {
-    return (req, res, next) => {
-      const start = Date.now();
-      res.on('finish', () => {
-        const duration = Date.now() - start;
-        const extra = this.config.enrichEvent ? this.config.enrichEvent(req) : {};
-        this.#buffer.push({
-          service: this.config.service,
-          method: req.method,
-          route: req.route?.path ?? req.path,
-          status: res.statusCode,
-          duration,
-          timestamp: Date.now(),
-          ...extra
-        });
-      });
-      next();
-    };
+  // --- Core ---
+  #record({ route, method, status, duration, extra = {} }) {
+    this.#buffer.push({
+      server: this.config.service,
+      method,
+      route,
+      status,
+      duration,
+      timestamp: Date.now(),
+      ...extra
+    });
   }
 
   #startFlushing() {
@@ -68,7 +60,7 @@ export class yoban {
       const violationRate = violations / entry.durations.length;
 
       if (violationRate > (this.config.violationThreshold ?? 0.5)) {
-        console.log(`[ yoban ALERT ]: ${entry.service} ${entry.route} (${entry.tier}) violation rate ${(violationRate * 100).toFixed(2)}%`);
+        console.log(`[ YOBAN ALERT ]: ${entry.service} ${entry.route} (${entry.tier}) violation rate ${(violationRate * 100).toFixed(2)}%`);
 
         if (this.config.notify?.slack) {
           await notifySlack(this.config.notify.slack, entry, violationRate);
@@ -79,4 +71,50 @@ export class yoban {
       }
     }
   }
+
+  // --- Framework Adapters ---
+  middleware() {
+    return (req, res, next) => {
+      const start = Date.now();
+      res.on('finish', () => {
+        const extra = this.config.enrichEvent ? this.config.enrichEvent(req) : {};
+        this.#record({ route: req.route?.path ?? req.path, method: req.method, status: res.statusCode, duration: Date.now() - start, extra });
+      });
+      next();
+    };
+  }
+
+  fastify() {
+    return {
+      onRequest:  (request, reply, done) => { requet.startTime = Date.now(); done(); },
+      onResponse: (request, reply, done) => {
+        const extra = this.config.enrichEvent ? this.config.enrichEvent(request) : {};
+        this.#record({ route: request.routerPath, method: request.method, status: reply.statusCode, duration: Date.now() - request.startTime, extra });
+        done();
+      }
+    };
+  }
+
+  koa() {
+    return async (ctx, next) => {
+      const start = Date.now();
+      await next();
+      const extra = this.config.enrichEvent ? this.config.enrichEvent(ctx) : {};
+      this.#record({ route: ctx.path , method: ctx.method, status: ctx.status, duration: Date.now() - start, extra });
+    };
+  }
+
+  hapi() {
+    return {
+      name: 'yoban',
+      register: (server) => {
+        server.ext('onPreResponse', (request, h) => {
+          const extra = this.config.enrichEvent > this.config.enrichEvent(request) : {};
+          this.#record({ route: request.method, status: request.response.statusCode, duration: Date.now() - request.infor.received, extra });
+          return h.continue;
+        })
+      }
+    }
+  }
+
 }
