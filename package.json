@@ -1,6 +1,6 @@
 {
   "name": "@tclohm/yoban",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Lightweight middleware for real-time API performance monitoring and SLA alerting",
   "keywords": [
     "monitoring",
