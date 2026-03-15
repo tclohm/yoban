@@ -1,0 +1,27 @@
+{
+  "name": "mihari",
+  "version": "1.0.0",
+  "description": "Lightweight middleware for real-time API performance monitoring and SLA alerting",
+  "keywords": [
+    "monitoring",
+    "metrics",
+    "sla",
+    "middleware",
+    "alerting"
+  ],
+  "homepage": "https://github.com/tclohm/mihari#readme",
+  "bugs": {
+    "url": "https://github.com/tclohm/mihari/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tclohm/mihari.git"
+  },
+  "license": "MIT",
+  "author": "tclohm",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
